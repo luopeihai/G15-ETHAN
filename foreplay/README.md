@@ -138,3 +138,43 @@ app.listen(3000);
     //启动3000端口
     app.listen(3000);
    ```
+
+   4.浏览器访问http://localhost:3000/v1/book ,显示:{"key":"book"}
+
+### VS 断点调试
+
+### 安装 nodemon
+
+1. npm i nodemon -g 全局安装 nodemon
+2. nodemon app 启动 app ,这时 node 文件修改将自动打包
+
+### require-directory 引入
+
+1. npm i require-directory --save
+2. 修改 app 代码
+
+   ```
+   const Koa = require("koa");
+    //实例 Koa
+    const app = new Koa();
+    const Router = require("koa-router");
+    const requireDirectory = require("require-directory");
+
+    //读取指定文件
+    requireDirectory(module, "./api", function() {
+    visit: whenLoadModule;
+    });
+
+    function whenLoadModule(obj) {
+    if (obj instanceof Router) {
+        //遍历对象有 Router的.js
+        app.use(obj.routes()); //注册路由
+    }
+    }
+
+    //启动3000端口
+    app.listen(3000);
+
+   ```
+
+   通过 require-directory 库方便批量导入路由,而不需要手动添加
