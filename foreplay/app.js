@@ -1,24 +1,15 @@
 const Koa = require("koa");
-
+const Router = require("koa-router"); //引入Route
 //实例 Koa
 const app = new Koa();
 
-//注册 中间件
-//ctx 上下文
-//next 下一个中间件函数
-app.use((ctx, next) => {
-  console.log(1);
-  const Promise = next();
-  console.log(Promise);
-  console.log(2);
-});
+//实例路由
+const router = new Router();
 
-//注册 中间件
-app.use((ctx, next) => {
-  console.log(3);
-  next();
-  console.log(4);
+router.get("/classic/latest", (ctx, next) => {
+  ctx.body = { data: "router调用页面" };
 });
+app.use(router.routes());
 
 //启动3000端口
 app.listen(3000);

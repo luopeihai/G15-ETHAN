@@ -9,6 +9,8 @@
   "author": "lph",
   "license": "ISC",
   "dependencies": {
-    "koa": "^2.11.0"
+    "axios": "^0.19.2",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8"
   }
 }

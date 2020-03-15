@@ -56,5 +56,50 @@ app.use((ctx, next) => {
 
 访问:localhost:3000 输出 **_1 3 4 Promise { undefined } 2_** 说明:
 
-1. 中间件已**_"洋葱模型"_**一样被调用
+1. 中间件已 **_"洋葱模型"_** 一样被调用
 2. next 返回为 Promise
+
+## async 与 await
+
+app.js next()异步回调 使用 async 与 await 简写
+
+```
+app.use(async (ctx, next) => {
+  console.log(1);
+  const Promise =await next();
+  console.log(Promise);
+  console.log(2);
+});
+
+```
+
+## 路由
+
+1. 引用第三方路由
+
+```
+npm i koa-router --save
+```
+
+2. 路由引入
+
+```
+const Koa = require("koa");
+const Router = require("koa-router"); //引入Route
+//实例 Koa
+const app = new Koa();
+
+//实例路由
+const router = new Router();
+
+router.get("/classic/latest", (ctx, next) => {
+  ctx.body = { data: "router调用页面" };
+});
+app.use(router.routes());
+
+//启动3000端口
+app.listen(3000);
+
+```
+
+3. 访问http://localhost:3000/classic/latest 页面输出 {"data":"router 调用页面"}
