@@ -8,7 +8,8 @@ const app = new Koa();
 //next 下一个中间件函数
 app.use((ctx, next) => {
   console.log(1);
-  next();
+  const Promise = next();
+  console.log(Promise);
   console.log(2);
 });
 

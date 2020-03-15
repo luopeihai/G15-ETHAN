@@ -40,7 +40,9 @@
 //next 下一个中间件函数
 app.use((ctx, next) => {
   console.log(1);
-  next();
+  //next 返回类型为 Promise
+  const Promise = next();
+  console.log(Promise);
   console.log(2);
 });
 
@@ -52,4 +54,7 @@ app.use((ctx, next) => {
 });
 ```
 
-输出 1 3 4 2,中间件已"洋葱模型"一样被调用
+访问:localhost:3000 输出 **_1 3 4 Promise { undefined } 2_** 说明:
+
+1. 中间件已**_"洋葱模型"_**一样被调用
+2. next 返回为 Promise
