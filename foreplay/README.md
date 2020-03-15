@@ -29,3 +29,27 @@
     //启动3000端口
     app.listen(3000);
    ```
+
+## koa 洋葱模式
+
+添加 app.js 代码,执行 app.js --> node app
+
+```
+//注册中间件
+//ctx 上下文
+//next 下一个中间件函数
+app.use((ctx, next) => {
+  console.log(1);
+  next();
+  console.log(2);
+});
+
+//注册中间件
+app.use((ctx, next) => {
+  console.log(3);
+  next();
+  console.log(4);
+});
+```
+
+输出 1 3 4 2,中间件已"洋葱模型"一样被调用
