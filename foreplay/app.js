@@ -1,15 +1,12 @@
 const Koa = require("koa");
-const Router = require("koa-router"); //引入Route
 //实例 Koa
 const app = new Koa();
 
-//实例路由
-const router = new Router();
+const book = require("./api/v1/book");
+const classic = require("./api/v1/classic");
 
-router.get("/classic/latest", (ctx, next) => {
-  ctx.body = { data: "router调用页面" };
-});
-app.use(router.routes());
+app.use(book.routes());
+app.use(classic.routes());
 
 //启动3000端口
 app.listen(3000);

@@ -75,13 +75,13 @@ app.use(async (ctx, next) => {
 
 ## 路由
 
-1. 引用第三方路由
+1. npm 引用第三方路由
 
 ```
 npm i koa-router --save
 ```
 
-2. 路由引入
+2. 代码路由引入
 
 ```
 const Koa = require("koa");
@@ -103,3 +103,38 @@ app.listen(3000);
 ```
 
 3. 访问http://localhost:3000/classic/latest 页面输出 {"data":"router 调用页面"}
+
+### 路由拆分
+
+1. 安装 rest 规则定义 接口,创建 api / v1 文件
+2. 新建 book.js 和 classic.js,举 book.js 内部代码为例
+
+   ```
+   const Router = require("koa-router");
+   const router = new Router();
+
+   router.get("/v1/book", async (ctx, next) => {
+   ctx.body = {
+       key: "book"
+   };
+   });
+
+   module.exports = router;
+   ```
+
+3. 修改启动文件 app.js
+
+   ```
+   const Koa = require("koa");
+    //实例 Koa
+    const app = new Koa();
+
+    const book = require("./api/v1/book");
+    const classic = require("./api/v1/classic");
+
+    app.use(book.routes());
+    app.use(classic.routes());
+
+    //启动3000端口
+    app.listen(3000);
+   ```
