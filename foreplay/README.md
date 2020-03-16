@@ -178,3 +178,62 @@ app.listen(3000);
    ```
 
    通过 require-directory 库方便批量导入路由,而不需要手动添加
+
+### 路由加载优化文件
+
+1. 根目录下创新 文件夹"app",把 api 拉入 app 中
+2. 根目录下创新 文件夹"core",文件夹内创建 init.js,添加路由代码
+
+   ```
+   const Router = require("koa-router");
+    const requireDirectory = require("require-directory");
+
+    class InitManager {
+    //静态方法
+    static initCore(app) {
+        // 入口方法
+        InitManager.app = app;
+        // 加载全部路由
+        InitManager.initLoadRouters();
+    }
+
+    // 加载全部路由
+    static initLoadRouters() {
+        // 绝对路径
+        // 获取绝对路径 process.cwd()
+        const apiDirectory = `${process.cwd()}/app/api`;
+
+        // 路由自动加载
+        requireDirectory(module, apiDirectory, {
+        visit: whenLoadModule
+        });
+
+        // 判断 requireDirectory 加载的模块是否为路由
+        function whenLoadModule(obj) {
+        if (obj instanceof Router) {
+            InitManager.app.use(obj.routes());
+        }
+        }
+    }
+    }
+
+    module.exports = InitManager;
+
+   ```
+
+   3.根目下 app.js 修改,把路由加载放到 InitManager 中,而 app 尽量缩减代码
+
+```
+    const Koa = require("koa");
+    //实例 Koa
+    const app = new Koa();
+
+    //初始化
+    const InitManager = require("./core/init");
+    //调用InitManager 静态方法
+    InitManager.initCore(app);
+
+    //启动3000端口
+    app.listen(3000);
+
+```
