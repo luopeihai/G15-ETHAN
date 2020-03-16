@@ -30,6 +30,7 @@
     app.listen(3000);
    ```
 
+
 ## koa 洋葱模式
 
 添加 app.js 代码,执行 app.js --> node app
@@ -242,3 +243,9 @@ app.listen(3000);
     app.listen(3000);
 
     ```
+
+### 传参方式
+这里我们用book.js 为事例
+1. 路劲中的参数 如: /v1/:id/book  
+   
+
