@@ -73,7 +73,7 @@ app.use(async (ctx, next) => {
 
 ```
 
-## 路由
+## koa-router 路由
 
 1. npm 引用第三方路由
 
@@ -95,6 +95,7 @@ const router = new Router();
 router.get("/classic/latest", (ctx, next) => {
   ctx.body = { data: "router调用页面" };
 });
+
 app.use(router.routes());
 
 //启动3000端口
@@ -145,10 +146,14 @@ app.listen(3000);
 
 ### 安装 nodemon
 
+> nodemon 代码修改自动更新
+
 1. npm i nodemon -g 全局安装 nodemon
 2. nodemon app 启动 app ,这时 node 文件修改将自动打包
 
 ### require-directory 引入
+
+> require-directory 为读取指定文件下文件
 
 1. npm i require-directory --save
 2. 修改 app 代码
@@ -160,7 +165,7 @@ app.listen(3000);
     const Router = require("koa-router");
     const requireDirectory = require("require-directory");
 
-    //读取指定文件
+    //读取指定文件 遍历
     requireDirectory(module, "./api", function() {
     visit: whenLoadModule;
     });
@@ -223,7 +228,7 @@ app.listen(3000);
 
    3.根目下 app.js 修改,把路由加载放到 InitManager 中,而 app 尽量缩减代码
 
-```
+    ```
     const Koa = require("koa");
     //实例 Koa
     const app = new Koa();
@@ -236,4 +241,4 @@ app.listen(3000);
     //启动3000端口
     app.listen(3000);
 
-```
+    ```

@@ -14,10 +14,10 @@ class InitManager {
   static initLoadRouters() {
     // 绝对路径
     // 获取绝对路径 process.cwd()
-    const apiDirectory = `${process.cwd()}/app/api`;
+    const apiDirectory1 = `${process.cwd()}/app/api`;
 
     // 路由自动加载
-    requireDirectory(module, apiDirectory, {
+    requireDirectory(module, apiDirectory1, {
       visit: whenLoadModule
     });
 
