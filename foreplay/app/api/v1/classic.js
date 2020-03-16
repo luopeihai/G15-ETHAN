@@ -1,7 +1,7 @@
 const Router = require("koa-router");
 const router = new Router();
 
-router.get("/v1/classic", async (ctx, next) => {
+router.get("/v1/classic", (ctx, next) => {
   ctx.body = {
     key: "classic"
   };

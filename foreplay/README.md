@@ -30,7 +30,6 @@
     app.listen(3000);
    ```
 
-
 ## koa 洋葱模式
 
 添加 app.js 代码,执行 app.js --> node app
@@ -229,23 +228,69 @@ app.listen(3000);
 
    3.根目下 app.js 修改,把路由加载放到 InitManager 中,而 app 尽量缩减代码
 
-    ```
-    const Koa = require("koa");
-    //实例 Koa
-    const app = new Koa();
+   ```
+   const Koa = require("koa");
+   //实例 Koa
+   const app = new Koa();
 
-    //初始化
-    const InitManager = require("./core/init");
-    //调用InitManager 静态方法
-    InitManager.initCore(app);
+   //初始化
+   const InitManager = require("./core/init");
+   //调用InitManager 静态方法
+   InitManager.initCore(app);
 
-    //启动3000端口
-    app.listen(3000);
+   //启动3000端口
+   app.listen(3000);
 
-    ```
+   ```
 
 ### 传参方式
-这里我们用book.js 为事例
-1. 路劲中的参数 如: /v1/:id/book  
-   
 
+这里我们用 book.js 为事例
+
+1. 路劲中的参数 如: /v1/:id/book 获取 id:
+
+   ```
+    router.post("/v1/:id/book", async (ctx, next) => {
+      ctx.body = ctx.params;
+    });
+   ```
+
+   访问:http://localhost:3000/v1/1/book
+   结果:{ id: '1' }
+
+2. post 中 body 获取 ,为了方便获取 使用中间件 koa-bodyparser
+
+```
+   //安装中间件
+   npm i koa-bodyparser --save
+
+   //app.js
+   // 中注册koa-bodyparser中间件
+   const parser = require('koa-bodyparser')
+   //这段代码优选与 路由注册
+   app.use(parser())
+
+   //book.js
+   //接受post
+   router.post("/v1/book/post", async (ctx, next) => {
+      ctx.body = ctx.request.body;
+    });
+```
+
+请求:post 路劲:/v1/book body 体:{
+"key":"hello"
+}
+
+显示:{
+"key":"hello"
+}
+3.获取header中参数 
+```
+ //比如获取header 中的token
+ const token = ctx.request.header.token
+```
+4.获取query查询参数
+```
+  //如请求为 localhost:3000/v1/book?param=queryValue
+  console.log(ctx.request.query)   // {"param": "queryValue" }
+```
