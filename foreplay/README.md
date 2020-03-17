@@ -284,13 +284,86 @@ app.listen(3000);
 显示:{
 "key":"hello"
 }
-3.获取header中参数 
+3. 获取header中参数 
 ```
  //比如获取header 中的token
  const token = ctx.request.header.token
 ```
-4.获取query查询参数
+4. 获取query查询参数
 ```
   //如请求为 localhost:3000/v1/book?param=queryValue
   console.log(ctx.request.query)   // {"param": "queryValue" }
 ```
+
+### 全局异步处理中间件
+1. /core 下创建错误对象 文件 http-exception ,代码如下
+   ```
+   //请求错误
+   class HttpException extends Error {
+      constructor(msg = "服务器异常", errorCode = 10000, code = 400) {
+         super();
+         this.errorCode = errorCode;
+         this.code = code;
+         this.msg = msg;
+      }
+   }
+   
+   ```
+2. /middlewares 下创建捕捉异常中间件 exception,代码如下:
+   ```
+   const { HttpException } = require("../core/http-exception");
+
+   const catchError = async (ctx, next) => {
+   try {
+      await next();
+   } catch (error) {
+   
+      if (error instanceof HttpException) {
+         ctx.body = {
+         msg: error.msg,
+         error_code: error.errorCode,
+         request: `${ctx.method} ${ctx.path}`
+         };
+         ctx.status = error.code;
+      }
+   }
+   };
+
+   module.exports = catchError;
+   ```
+3.app.js 注册exception.js中间件
+
+   ```
+      //全局异常处理中间件
+      const catchError = require("./middlewares/exception");
+
+      //注册中间件
+      app.use(catchError);
+   ```
+1. error对象 挂载到全局 errs下面,修改init.js代码
+   ```
+   ...
+   //静态方法
+   static initCore(app) {
+      .....
+      // 异常处理
+      InitManager.loadHttpException();
+   }
+   ....
+    static loadHttpException() {
+      const errors = require("./http-exception");
+      //error对象 挂载到全局 errs下面
+      global.errs = errors;
+    }
+   ...
+   ``` 
+2. /app/api/v1/book.js 内 添加 错误调用接口 
+   ```
+   //报错
+   router.get("/v1/error", async (ctx, next) => {
+      const error = new global.errs.HttpException("跪求报错1", 10001, 400);
+      throw error;
+   });
+   ``` 
+   显示  {"msg":"跪求报错1","error_code":10001,"request":"GET /v1/error"}    
+   

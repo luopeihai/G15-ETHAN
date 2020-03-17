@@ -8,6 +8,8 @@ class InitManager {
     InitManager.app = app;
     // 加载全部路由
     InitManager.initLoadRouters();
+    // 异常处理
+    InitManager.loadHttpException();
   }
 
   // 加载全部路由
@@ -27,6 +29,12 @@ class InitManager {
         InitManager.app.use(obj.routes());
       }
     }
+  }
+
+  static loadHttpException() {
+    const errors = require("./http-exception");
+    //保存到全局 errs下面
+    global.errs = errors;
   }
 }
 

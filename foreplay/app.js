@@ -3,6 +3,11 @@ const Koa = require("koa");
 const app = new Koa();
 //对post body 获取的中间件
 const parser = require("koa-bodyparser");
+//全局异常处理中间件
+const catchError = require("./middlewares/exception");
+
+//注册中间件
+app.use(catchError);
 
 //优先于 router注册
 app.use(parser());
