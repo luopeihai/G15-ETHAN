@@ -12,6 +12,14 @@ const catchError = async (ctx, next) => {
         request: `${ctx.method} ${ctx.path}`
       };
       ctx.status = error.code;
+    } else {
+      //未知异常
+      ctx.body = {
+        msg: "未知错误",
+        error_code: 999,
+        request: `${ctx.method} ${ctx.path}`
+      };
+      ctx.status = 500;
     }
   }
 };

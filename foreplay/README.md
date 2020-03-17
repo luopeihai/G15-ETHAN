@@ -284,19 +284,25 @@ app.listen(3000);
 显示:{
 "key":"hello"
 }
-3. 获取header中参数 
+
+3. 获取 header 中参数
+
 ```
  //比如获取header 中的token
  const token = ctx.request.header.token
 ```
-4. 获取query查询参数
+
+4. 获取 query 查询参数
+
 ```
   //如请求为 localhost:3000/v1/book?param=queryValue
   console.log(ctx.request.query)   // {"param": "queryValue" }
 ```
 
 ### 全局异步处理中间件
+
 1. /core 下创建错误对象 文件 http-exception ,代码如下
+
    ```
    //请求错误
    class HttpException extends Error {
@@ -307,9 +313,11 @@ app.listen(3000);
          this.msg = msg;
       }
    }
-   
+
    ```
+
 2. /middlewares 下创建捕捉异常中间件 exception,代码如下:
+
    ```
    const { HttpException } = require("../core/http-exception");
 
@@ -317,21 +325,30 @@ app.listen(3000);
    try {
       await next();
    } catch (error) {
-   
+
       if (error instanceof HttpException) {
-         ctx.body = {
-         msg: error.msg,
-         error_code: error.errorCode,
-         request: `${ctx.method} ${ctx.path}`
-         };
-         ctx.status = error.code;
-      }
+      ctx.body = {
+        msg: error.msg,
+        error_code: error.errorCode,
+        request: `${ctx.method} ${ctx.path}`
+      };
+      ctx.status = error.code;
+    } else {
+      //未知异常
+      ctx.body = {
+        msg: "未知错误",
+        error_code: 999,
+        request: `${ctx.method} ${ctx.path}`
+      };
+      ctx.status = 500;
+    }
    }
    };
 
    module.exports = catchError;
    ```
-3.app.js 注册exception.js中间件
+
+   3.app.js 注册 exception.js 中间件
 
    ```
       //全局异常处理中间件
@@ -340,7 +357,8 @@ app.listen(3000);
       //注册中间件
       app.use(catchError);
    ```
-1. error对象 挂载到全局 errs下面,修改init.js代码
+
+3. error 对象 挂载到全局 errs 下面,修改 init.js 代码
    ```
    ...
    //静态方法
@@ -356,14 +374,40 @@ app.listen(3000);
       global.errs = errors;
     }
    ...
-   ``` 
-2. /app/api/v1/book.js 内 添加 错误调用接口 
+   ```
+4. /app/api/v1/book.js 内 添加 错误调用接口
+
    ```
    //报错
    router.get("/v1/error", async (ctx, next) => {
       const error = new global.errs.HttpException("跪求报错1", 10001, 400);
       throw error;
    });
-   ``` 
-   显示  {"msg":"跪求报错1","error_code":10001,"request":"GET /v1/error"}    
-   
+   ```
+
+   显示 {"msg":"跪求报错 1","error_code":10001,"request":"GET /v1/error"}
+
+## Lin-Validator 参数验证
+
+1. 安装 lodash, validator,jsonwebtoken 库 npm i lodash validator --save
+2. /core 引入优秀的校验 js lin-validator-v2.js 和 util.js
+3. /app 创建 validators/validator.js,代码如下
+
+   ```
+   const { Rule, LinValidator } = require("../../core/lin-validator-v2");
+
+   class PositiveIntegerValidator extends LinValidator {
+   constructor() {
+      super();
+      //参数: 整数(必填),提示(必填),限制最小值 >= 1
+      this.id = [new Rule("isInt", "需要正整数", { min: 1 })];
+   }
+   }
+
+   module.exports = {
+   LikeValidator
+   };
+
+   ```
+
+4.

@@ -33,7 +33,7 @@ class InitManager {
 
   static loadHttpException() {
     const errors = require("./http-exception");
-    //保存到全局 errs下面
+    //error对象 挂载到全局 errs下面
     global.errs = errors;
   }
 }
