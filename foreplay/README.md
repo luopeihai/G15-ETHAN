@@ -390,9 +390,9 @@ app.listen(3000);
 ## Lin-Validator 参数验证
 
 1. 安装 lodash, validator,jsonwebtoken 库 npm i lodash validator --save
-   
+
 2. /core 引入优秀的校验 js lin-validator-v2.js 和 util.js
-   
+
 3. /app 创建 validators/validator.js,代码如下
 
    ```
@@ -413,6 +413,7 @@ app.listen(3000);
    ```
 
 4./app/api/v1 添加测试代码
+
 ```
    router.get("/v1/:id/validate", async (ctx, next) => {
    const val = await new PositiveIntegerValidator().validate(ctx);
@@ -420,19 +421,24 @@ app.listen(3000);
    });
 
 ```
+
 真去地址:
 请求地址为:http://localhost:3000/v1/1/validate 输出 1
 
-id=-1 的错误地址:请求地址为:http://localhost:3000/v1/-1/validate 输出 {"msg":["id需要正整数"],"error_code":10000,"request":"GET /v1/-1/validate"} 
+id=-1 的错误地址:请求地址为:http://localhost:3000/v1/-1/validate 输出 {"msg":["id 需要正整数"],"error_code":10000,"request":"GET /v1/-1/validate"}
 
 ## 配置生产环境 和 开发环境
-1. 创建 /config/config.js 代码,environment设置为dev 开发环境
+
+1. 创建 /config/config.js 代码,environment 设置为 dev 开发环境
+
 ```
    module.exports = {
    environment: "dev" //production
    };
 ```
+
 2. /core/init 中 把配置加载到全局变量
+
 ```
   static initCore(app) {
     ...
@@ -447,16 +453,147 @@ id=-1 的错误地址:请求地址为:http://localhost:3000/v1/-1/validate 输�
     global.config = config;
   }
 ```
-3./app/api/v1/book 添加获取environment接口
+
+3./app/api/v1/book 添加获取 environment 接口
+
 ```
 router.get("/v1/environment", async (ctx, next) => {
   ctx.body = global.config.environment;
 });
 
 ```
+
 请求:http://localhost:3000/v1/environment
 
 返回:dev
 
+# mysql 数据库操作
 
+1. 创建 foreplay 数据库
+2. 安装依赖库 sequelize ,bcryptjs (密码加密) ,mysql2 (mysql 依赖)
 
+```
+npm i sequelize bcryptjs mysql2 -S
+```
+
+3. 修改 /config/config.js 配置数据库参数
+
+   ```
+   module.exports = {
+   environment: "dev", //production
+   database: {
+      dbName: "foreplay",
+      host: "localhost",
+      port: 3306,
+      user: "root",
+      password: "root"
+   }
+   };
+   ```
+
+4. 创建 /core/db.js sequelize 基类
+
+   ```
+   const Sequelize = require('sequelize')
+
+   const {
+      dbName,
+      host,
+      port,
+      user,
+      password
+   } = require('../config/config').database
+
+   const sequelize = new Sequelize(dbName, user, password, {
+      dialect: 'mysql', //连接msyql数据库
+      host,
+      port,
+      logging: true,//操作显示
+      timezone: '+08:00', //市区 为北京时间
+      define: {
+         // create_time && update_time
+         timestamps: true,
+         // delete_time
+         paranoid: true,
+         createdAt: 'created_at',
+         updatedAt: 'updated_at',
+         deletedAt: 'deleted_at',
+         // 把驼峰命名转换为下划线
+         underscored: true,
+         freezeTableName: true,
+         scopes: {
+               bh: {
+                  attributes: {
+                     exclude: ['updated_at', 'deleted_at', 'created_at']
+                  }
+               }
+         }
+      }
+   })
+
+   // 创建模型
+   sequelize.sync({
+   force: false
+   })
+
+   module.exports = {
+   sequelize
+   }
+   ```
+
+5. 创建 model user 用户 model /app/models/user.js
+
+```
+   const bcrypt = require("bcryptjs");
+   const { sequelize } = require("../../core/db");
+   const { Sequelize, Model } = require("sequelize");
+   // 定义用户模型
+   class User extends Model {}
+   User.init(
+   {
+   id: {
+      type: Sequelize.INTEGER, //整数
+      primaryKey: true, //主键
+      autoIncrement: true //自增长
+   },
+   nickname: Sequelize.STRING, //字符串
+   email: {
+      type: Sequelize.STRING(128),
+      unique: true //唯一
+   },
+   password: {
+   // 扩展 设计模式 观察者模式
+   // ES6 Reflect Vue3.0
+   type: Sequelize.STRING,
+   set(val) {
+      // 加密
+      const salt = bcrypt.genSaltSync(10);
+      // 生成加密密码
+      const psw = bcrypt.hashSync(val, salt);
+      this.setDataValue("password", psw);
+   }
+   },
+   openid: {
+      type: Sequelize.STRING(64), //长度 64
+      unique: true //唯一
+   }
+   },
+   {
+      sequelize,
+      tableName: "user"
+   }
+   );
+
+   module.exports = {
+      User
+   };
+
+```
+
+6.根目录创建 dbOp.js ,代码如下
+
+```
+  require("./app/models/user");
+```
+
+node dbOp 执行 user 创建数据表
