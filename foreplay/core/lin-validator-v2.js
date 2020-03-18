@@ -15,6 +15,7 @@ class LinValidator {
     this.parsed = {};
   }
 
+  //返回参数
   _assembleAllParams(ctx) {
     return {
       body: ctx.request.body,
@@ -24,6 +25,7 @@ class LinValidator {
     };
   }
 
+  //
   get(path, parsed = true) {
     if (parsed) {
       const value = get(this.parsed, path, null);

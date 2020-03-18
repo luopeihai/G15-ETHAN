@@ -5,8 +5,15 @@ const catchError = async (ctx, next) => {
     await next();
   } catch (error) {
     // 开发环境
+    const isHttpException = error instanceof HttpException;
+    const isDev = global.config.environment === "dev";
 
-    if (error instanceof HttpException) {
+    if (isDev && !isHttpException) {
+      throw error;
+    }
+
+    // 生成环境
+    if (isHttpException) {
       ctx.body = {
         msg: error.msg,
         error_code: error.errorCode,
@@ -14,10 +21,9 @@ const catchError = async (ctx, next) => {
       };
       ctx.status = error.code;
     } else {
-      //未知异常
       ctx.body = {
-        msg: "未知错误",
-        error_code: 999,
+        msg: "未知错误！",
+        error_code: 9999,
         request: `${ctx.method} ${ctx.path}`
       };
       ctx.status = 500;
