@@ -11,6 +11,7 @@ app.use(catchError);
 
 //优先于 router注册
 app.use(parser());
+
 //初始化
 const InitManager = require("./core/init");
 //调用InitManager 静态方法

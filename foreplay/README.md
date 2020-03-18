@@ -390,7 +390,9 @@ app.listen(3000);
 ## Lin-Validator 参数验证
 
 1. 安装 lodash, validator,jsonwebtoken 库 npm i lodash validator --save
+   
 2. /core 引入优秀的校验 js lin-validator-v2.js 和 util.js
+   
 3. /app 创建 validators/validator.js,代码如下
 
    ```
@@ -410,4 +412,51 @@ app.listen(3000);
 
    ```
 
-4.
+4./app/api/v1 添加测试代码
+```
+   router.get("/v1/:id/validate", async (ctx, next) => {
+   const val = await new PositiveIntegerValidator().validate(ctx);
+   ctx.body = val.get("path.id");
+   });
+
+```
+真去地址:
+请求地址为:http://localhost:3000/v1/1/validate 输出 1
+
+id=-1 的错误地址:请求地址为:http://localhost:3000/v1/-1/validate 输出 {"msg":["id需要正整数"],"error_code":10000,"request":"GET /v1/-1/validate"} 
+
+## 配置生产环境 和 开发环境
+1. 创建 /config/config.js 代码,environment设置为dev 开发环境
+```
+   module.exports = {
+   environment: "dev" //production
+   };
+```
+2. /core/init 中 把配置加载到全局变量
+```
+  static initCore(app) {
+    ...
+    //配置挂载到全局
+    InitManager.loadConfig();
+  }
+
+  static loadConfig(path = "") {
+    const configPath = path || process.cwd() + "/config/config.js";
+    const config = require(configPath);
+    //配置挂载到 全局
+    global.config = config;
+  }
+```
+3./app/api/v1/book 添加获取environment接口
+```
+router.get("/v1/environment", async (ctx, next) => {
+  ctx.body = global.config.environment;
+});
+
+```
+请求:http://localhost:3000/v1/environment
+
+返回:dev
+
+
+

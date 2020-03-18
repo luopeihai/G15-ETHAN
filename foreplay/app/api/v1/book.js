@@ -23,15 +23,19 @@ router.post("/v1/book", async (ctx, next) => {
 
 //报错
 router.get("/v1/error", async (ctx, next) => {
-  // const error = new global.errs.ParameterException("跪求报错1", 10001, 400);
-  // throw error;
-  // ctx.body = ctx.params;
+  const error = new global.errs.ParameterException("跪求报错1", 10001, 400);
+  throw error;
+  ctx.body = ctx.params;
 });
 
 //id 验证
 router.get("/v1/:id/validate", async (ctx, next) => {
   const val = await new PositiveIntegerValidator().validate(ctx);
-  // ctx.body = val.get("path.id");
+  ctx.body = val.get("path.id");
+});
+
+router.get("/v1/environment", async (ctx, next) => {
+  ctx.body = global.config.environment;
 });
 
 module.exports = router;

@@ -10,6 +10,9 @@ class InitManager {
     InitManager.initLoadRouters();
     // 异常处理
     InitManager.loadHttpException();
+
+    //配置挂载到全局
+    InitManager.loadConfig();
   }
 
   // 加载全部路由
@@ -35,6 +38,13 @@ class InitManager {
     const errors = require("./http-exception");
     //error对象 挂载到全局 errs下面
     global.errs = errors;
+  }
+
+  static loadConfig(path = "") {
+    const configPath = path || process.cwd() + "/config/config.js";
+    const config = require(configPath);
+    //配置挂载到 全局
+    global.config = config;
   }
 }
 
