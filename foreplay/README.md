@@ -775,3 +775,14 @@ node dbOp 执行 user 创建数据表
    }
 
 ```
+
+### 创建小程序
+1. 登录微信开放平台  [下载微信小程序开发工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)
+2. 
+
+### 微信登录
+
+1. 新建 小程序业务层 /app/services/wx.js
+2. 由于需要请求小程序后台 获取 openid 所以安装库 axios
+
+

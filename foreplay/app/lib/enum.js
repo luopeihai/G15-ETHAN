@@ -10,7 +10,7 @@ function isThisType(val) {
 
 //登录方式
 const LoginType = {
-  USER_MINI_PROGRAM: 100, //
+  USER_MINI_PROGRAM: 100, //小程序
   USER_EMAIL: 101, //邮箱登录
   USER_MOBILE: 102, //手机登录
   ADMIN_EMAIL: 200, //管理员 邮箱登录
