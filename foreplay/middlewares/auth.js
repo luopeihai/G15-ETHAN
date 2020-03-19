@@ -40,14 +40,14 @@ class Auth {
       }
 
       //权限不足
-      if (decode.scope <= this.level) {
-        errMsg = "权限不足";
-        throw new global.errs.Forbidden(errMsg);
-      }
+      //   if (decode.scope <= this.level) {
+      //     errMsg = "权限不足";
+      //     throw new global.errs.Forbidden(errMsg);
+      //   }
 
       ctx.auth = {
-        uid: decode.uid,
-        scope: decode.scope
+        uid: decode.uid, //获取id
+        scope: decode.scope //生成token 带的参数
       };
 
       await next();
