@@ -33,6 +33,7 @@ class User extends Model {
     });
     return user;
   }
+
   // 注册小程用户
   static async createUserByOpenid(openid) {
     // 查询用户
@@ -43,7 +44,6 @@ class User extends Model {
   }
 }
 
-// 初始用户模型
 User.init(
   {
     id: {

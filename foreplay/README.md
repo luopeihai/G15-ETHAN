@@ -597,3 +597,37 @@ npm i sequelize bcryptjs mysql2 -S
 ```
 
 node dbOp 执行 user 创建数据表
+
+## 创建用户
+
+1. /app/validators 下 创建验证类 user.js
+2. /api/v1 下 创建 user 请求处理 user.js
+
+   ```
+   // 用户注册
+   router.post("/register", async ctx => {
+   const v = await new RegisterValidator().validate(ctx);
+   const user = {
+      email: v.get("body.email"),
+      password: v.get("body.password2"),
+      nickname: v.get("body.nickname")
+   };
+
+   const r = await User.create(user);
+
+   handleResult("注册成功");
+   });
+   ```
+
+3. postman 创造请求 post localhost:3000/v1/user/register 选择 body 选择 raw --> JSON 形式 body 内容:
+
+```
+ //json
+ {
+      "email":"459114230@qq.com",
+      "nickname":"lph1",
+      "password1":"123456$",
+      "password2":"123456$"
+   }
+
+```
