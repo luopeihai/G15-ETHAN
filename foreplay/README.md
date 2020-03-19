@@ -631,3 +631,34 @@ node dbOp 执行 user 创建数据表
    }
 
 ```
+
+## 密码加密
+
+1. 引用加密库 bcryptjs
+   ```
+   npm i bcryptjs --save
+   ```
+2. /app/models/user.js 修改 sequelize 中 password 写入操作
+
+   ```
+   const bcrypt = require("bcryptjs");
+   ...
+   User.init({
+      ...
+           password: {
+               // 扩展 设计模式 观察者模式
+               // ES6 Reflect Vue3.0
+               type: Sequelize.STRING,
+               set(val) {
+                  // 加盐
+                  const salt = bcrypt.genSaltSync(10);
+                  // 生成加密密码
+                  const psw = bcrypt.hashSync(val, salt);
+                  this.setDataValue("password", psw);
+               }
+            },
+      ...
+   })
+   ...
+
+   ```
