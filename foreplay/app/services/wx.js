@@ -32,6 +32,8 @@ class WXManager {
 
     const errCode = result.data.errcode;
     const errMsg = result.data.errmsg;
+
+    //当返回状态码 说明有错误
     if (errCode) {
       throw new global.errs.AuthFailed("openid获取失败: " + errMsg);
     }
