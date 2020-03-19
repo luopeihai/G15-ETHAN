@@ -5,6 +5,7 @@ const { Sequelize, Model } = require("sequelize");
 
 // 定义用户模型
 class User extends Model {
+  //通过邮箱 查询 用户
   static async verifyEmailPassword(email, plainPassword) {
     // 查询用户
     const user = await User.findOne({
@@ -12,14 +13,19 @@ class User extends Model {
         email
       }
     });
+
+    //账号不存在
     if (!user) {
       throw new global.errs.AuthFailed("账号不存在");
     }
+
     // 验证密码
     const correct = bcrypt.compareSync(plainPassword, user.password);
+
     if (!correct) {
       throw new global.errs.AuthFailed("密码不正确");
     }
+
     return user;
   }
 
@@ -61,7 +67,7 @@ User.init(
       // ES6 Reflect Vue3.0
       type: Sequelize.STRING,
       set(val) {
-        // 加密
+        // 加盐
         const salt = bcrypt.genSaltSync(10);
         // 生成加密密码
         const psw = bcrypt.hashSync(val, salt);
