@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 class Auth {
   constructor(level) {
-    this.level = level || 1; //权限等级
+    this.level = level || 1; //初始权限 权限等级
     Auth.AUSE = 8; //用户
     Auth.ADMIN = 16; //管理员
     Auth.SPUSER_ADMIN = 32; //超级管理员
@@ -39,11 +39,10 @@ class Auth {
         throw new global.errs.Forbidden(errMsg);
       }
 
-      //权限不足
-      //   if (decode.scope <= this.level) {
-      //     errMsg = "权限不足";
-      //     throw new global.errs.Forbidden(errMsg);
-      //   }
+      if (decode.scope <= this.level) {
+        errMsg = "权限不足";
+        throw new global.errs.Forbidden(errMsg);
+      }
 
       ctx.auth = {
         uid: decode.uid, //获取id

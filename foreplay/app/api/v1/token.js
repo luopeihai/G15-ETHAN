@@ -13,8 +13,9 @@ const router = new Router({
   prefix: "/v1/token"
 });
 
-// 获取 token
+// 登录  获取 token
 router.post("/", async ctx => {
+  //格式判断
   const v = await new TokenValidator().validate(ctx);
 
   let token;

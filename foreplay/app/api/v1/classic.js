@@ -4,30 +4,12 @@ const router = new Router({
 });
 
 const { Auth } = require("../../../middlewares/auth");
-// const { Flow } = require("../../models/flow");
-// const { Movie, Music, Sentence } = require("../../models/classic");
-// const { Art } = require("../../models/art");
-// const { Favor } = require("../../models/favor");
 const {
   PositiveIntegerValidator,
   ClassicValidator
 } = require("../../validators/classic");
 
-router.get("/latest", new Auth().m, async (ctx, next) => {
-  // const flow = await Flow.findOne({
-  //   order: [["index", "DESC"]]
-  // });
-
-  // let art = await Art.getData(flow.art_id, flow.type);
-  // const likeLatest = await Favor.userLikeIt(
-  //   flow.art_id,
-  //   flow.type,
-  //   ctx.auth.uid
-  // );
-
-  // art.setDataValue("index", flow.index);
-  // art.setDataValue("like_status", likeLatest);
-
+router.get("/latest", new Auth(9).m, async (ctx, next) => {
   ctx.body = ctx.auth.uid;
 });
 
