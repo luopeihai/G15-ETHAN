@@ -1,7 +1,7 @@
 # dependencies
 node_modules
 package-lock.json
-miniprogram_npm
+miniprogram_npm 
 
 # production
 dist

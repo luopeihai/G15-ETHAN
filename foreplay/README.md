@@ -142,8 +142,6 @@ app.listen(3000);
 
    4.浏览器访问http://localhost:3000/v1/book ,显示:{"key":"book"}
 
-### VS 断点调试
-
 ### 安装 nodemon
 
 > nodemon 代码修改自动更新
@@ -187,7 +185,7 @@ app.listen(3000);
 ### 路由加载优化文件
 
 1. 根目录下创新 文件夹"app",把 api 拉入 app 中
-2. 根目录下创新 文件夹"core",文件夹内创建 init.js,添加路由代码
+2. 创建项目启动后的初始化页面,根目录下创新 文件夹"core",文件夹内创建 init.js,添加路由代码
 
    ```
    const Router = require("koa-router");
@@ -250,7 +248,7 @@ app.listen(3000);
 1. 路劲中的参数 如: /v1/:id/book 获取 id:
 
    ```
-    router.post("/v1/:id/book", async (ctx, next) => {
+    router.get("/v1/:id/book", async (ctx, next) => {
       ctx.body = ctx.params;
     });
    ```
@@ -258,7 +256,7 @@ app.listen(3000);
    访问:http://localhost:3000/v1/1/book
    结果:{ id: '1' }
 
-2. post 中 body 获取 ,为了方便获取 使用中间件 koa-bodyparser
+2. post 中 body 获取 ,为了方便获取 body 使用中间件 koa-bodyparser
 
 ```
    //安装中间件
@@ -358,7 +356,7 @@ app.listen(3000);
       app.use(catchError);
    ```
 
-3. error 对象 挂载到全局 errs 下面,修改 init.js 代码
+3. error 对象 挂载到全局 errs 下面,修改 /core/init.js 代码
    ```
    ...
    //静态方法
@@ -389,9 +387,9 @@ app.listen(3000);
 
 ## Lin-Validator 参数验证
 
-1. 安装 lodash, validator,jsonwebtoken 库 npm i lodash validator --save
+1. 安装 lodash, validator 库 npm i lodash validator --save
 
-2. /core 引入优秀的校验 js lin-validator-v2.js 和 util.js
+2. /core 引入**_林间有风_**优秀的校验 js lin-validator-v2.js 和 util.js
 
 3. /app 创建 validators/validator.js,代码如下
 
@@ -665,6 +663,8 @@ node dbOp 执行 user 创建数据表
 
 ### 邮箱登录 获取 token
 
+1.token 生成使用 JWT ,按照 JWT 库:npm i jsonwebtoken --save
+
 ### token 校验
 
 1. 安装 basic-auth 库 ,获取 HTTP 规定 身份验证机制 HttpBasicAuth,下的 token
@@ -777,12 +777,19 @@ node dbOp 执行 user 创建数据表
 ```
 
 ### 创建小程序
-1. 登录微信开放平台  [下载微信小程序开发工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)
-2. 
+
+1. 登录微信开放平台 [下载微信小程序开发工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html)
+2. 创建小程序 选择测试号
+3. 开启 npm 模块 步骤:设置-->项目-->本地配置-->使用 npm 模块
+4. 构建 lin-ui 库
+
+- 右键 page 文件 --> 在终端中打开 在回退到小程序根目录
+- npm init 初始 npm
+- lin-ui 库引入 npm i lin-ui --save
+- 工具 --> 构建 npm
 
 ### 微信登录
 
 1. 新建 小程序业务层 /app/services/wx.js
 2. 由于需要请求小程序后台 获取 openid 所以安装库 axios
-
-
+3. 设置项目不验证请求域名 步骤: 设置 --> 项目设置 --> 不校验合法域名... 打钩

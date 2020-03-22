@@ -5,7 +5,6 @@ const { Sequelize, Model } = require("sequelize");
 
 // 定义用户模型
 class User extends Model {
-  //通过邮箱 查询 用户
   static async verifyEmailPassword(email, plainPassword) {
     // 查询用户
     const user = await User.findOne({
@@ -14,7 +13,6 @@ class User extends Model {
       }
     });
 
-    //账号不存在
     if (!user) {
       throw new global.errs.AuthFailed("账号不存在");
     }
@@ -37,6 +35,7 @@ class User extends Model {
         openid
       }
     });
+
     return user;
   }
 
@@ -46,28 +45,31 @@ class User extends Model {
     const user = await User.create({
       openid
     });
+
     return user;
   }
 }
 
+// 初始用户模型
 User.init(
   {
     id: {
-      type: Sequelize.INTEGER, //整数
-      primaryKey: true, //主键
-      autoIncrement: true //自增长
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER
     },
-    nickname: Sequelize.STRING, //字符串
+    nickname: Sequelize.STRING,
     email: {
       type: Sequelize.STRING(128),
-      unique: true //唯一
+      unique: true
     },
     password: {
       // 扩展 设计模式 观察者模式
       // ES6 Reflect Vue3.0
       type: Sequelize.STRING,
       set(val) {
-        // 加盐
+        // 加密
         const salt = bcrypt.genSaltSync(10);
         // 生成加密密码
         const psw = bcrypt.hashSync(val, salt);
@@ -75,8 +77,8 @@ User.init(
       }
     },
     openid: {
-      type: Sequelize.STRING(64), //长度64
-      unique: true //唯一
+      type: Sequelize.STRING(64)
+      // unique: true
     }
   },
   {
