@@ -1,3 +1,7 @@
+import {
+  Base64
+} from 'js-base64'
+
 Page({
   onGetToken(){ //获取token
     //微信登录
@@ -24,7 +28,7 @@ Page({
       }
     })
   },
-  onVerifyToken() {
+  onVerifyToken() { //验证token
     wx.request({
       url: 'http://localhost:3000/v1/token/verify',
       method: 'POST',
@@ -35,7 +39,28 @@ Page({
         console.log(res.data)
       }
     })
-  }  
+  },
+   onGetLatest() { //获取最新期刊
+    wx.request({
+      url: 'http://localhost:3000/v1/classic/latest',
+      method: 'GET',
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
+  _encode() { //Authorization 加密
+    // account:password
+    // token
+    // token:
+    const token = wx.getStorageSync('token')
+    const base64 = Base64.encode(token + ':')
+    // Authorization:Basic base64(account:password)
+    return 'Basic ' + base64
+  } 
 
 
 })

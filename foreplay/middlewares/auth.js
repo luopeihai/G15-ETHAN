@@ -56,6 +56,7 @@ class Auth {
   // 验证token是否有效
   static verifyToken(token) {
     try {
+      //
       jwt.verify(token, global.config.security.secretKey);
 
       return true;

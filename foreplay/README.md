@@ -793,8 +793,20 @@ node dbOp 执行 user 创建数据表
 1. 新建 小程序业务层 /app/services/wx.js
 2. 由于需要请求小程序后台 获取 openid 所以安装库 axios
 3. 设置项目不验证请求域名 步骤: 设置 --> 项目设置 --> 不校验合法域名... 打钩
-   
-### 验证token   
 
+### 验证 token
 
+### 获取最新期刊
 
+1. .sql 导入
+2. 获取最新期刊为需要 token 验证,所以请求头 header Authorization 塞入规范的 base64 格式的 token,这里需要引入 js-base64 包
+
+```
+npm i js-base64 --save
+```
+
+之后 工具 --> 构建 npm,引入小程序中
+
+```
+import {Base64 } from 'js-base64'
+```
