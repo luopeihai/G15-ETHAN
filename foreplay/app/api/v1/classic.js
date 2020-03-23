@@ -17,24 +17,25 @@ const {
 
 //查询最新一期期刊
 router.get("/latest", new Auth().m, async (ctx, next) => {
+  //获取 最新期刊
   const flow = await Flow.findOne({
     order: [["index", "DESC"]]
   });
 
   let art = await Art.getData(flow.art_id, flow.type);
 
-  // const likeLatest = await Favor.userLikeIt(
-  //   flow.art_id,
-  //   flow.type,
-  //   ctx.auth.uid
-  // );
+  const likeLatest = await Favor.userLikeIt(
+    flow.art_id,
+    flow.type,
+    ctx.auth.uid
+  );
 
   // 类 不能直接添加不存在的属性
   // 不能实现 : art.index = flow.index;
 
   //类
   art.setDataValue("index", flow.index);
-  // art.setDataValue("like_status", likeLatest);
+  art.setDataValue("like_status", likeLatest);
 
   ctx.body = {
     art

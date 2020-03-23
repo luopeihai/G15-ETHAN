@@ -19,8 +19,6 @@ router.post("/register", async ctx => {
     // id: v.get("body.id")
   };
 
-  console.log(user);
-
   const r = await User.create(user);
 
   handleResult("注册成功");

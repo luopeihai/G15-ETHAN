@@ -44,6 +44,7 @@ class Auth {
         throw new global.errs.Forbidden(errMsg);
       }
 
+      //中间件挂载
       ctx.auth = {
         uid: decode.uid, //获取id
         scope: decode.scope //生成token 带的参数
