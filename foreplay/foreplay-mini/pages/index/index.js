@@ -52,6 +52,40 @@ Page({
       }
     })
   },
+  onLike() { //点赞
+    wx.request({
+      url: 'http://localhost:3000/v1/like',
+      method: 'POST',
+      data: {
+        art_id: 1,
+        type: 100
+      },
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
+
+  onDisLike() { //取消点赞
+    wx.request({
+      url: 'http://localhost:3000/v1/like/cancel',
+      method: 'POST',
+      data: {
+        art_id: 1,
+        type: 100
+      },
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
+
   _encode() { //Authorization 加密
     // account:password
     // token
