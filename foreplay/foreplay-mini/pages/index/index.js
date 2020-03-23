@@ -23,5 +23,19 @@ Page({
         }
       }
     })
-  }
+  },
+  onVerifyToken() {
+    wx.request({
+      url: 'http://localhost:3000/v1/token/verify',
+      method: 'POST',
+      data: {
+        token: wx.getStorageSync('token') //获取wx 缓存类的token
+      },
+      success: res => {
+        console.log(res.data)
+      }
+    })
+  }  
+
+
 })
