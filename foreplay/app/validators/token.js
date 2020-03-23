@@ -33,6 +33,7 @@ class TokenValidator extends LinValidator {
   }
 }
 
+//不允许为空
 class NotEmptyValidator extends LinValidator {
   constructor() {
     super();

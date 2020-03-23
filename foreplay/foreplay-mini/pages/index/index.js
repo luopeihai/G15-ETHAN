@@ -1,6 +1,6 @@
 Page({
   onGetToken(){ //获取token
-    //code
+    //微信登录
     wx.login({
       success: (res) => {
         if (res.code) {
@@ -15,6 +15,7 @@ Page({
               console.log(res.data)
               const code = res.statusCode.toString()
               if (code.startsWith('2')) {
+                //写入缓存中
                 wx.setStorageSync('token', res.data.token)
               }
             }

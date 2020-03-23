@@ -54,10 +54,9 @@ class User extends Model {
 User.init(
   {
     id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4, // Generates a UUID V4
+      primaryKey: true
     },
     nickname: Sequelize.STRING,
     email: {
@@ -77,8 +76,8 @@ User.init(
       }
     },
     openid: {
-      type: Sequelize.STRING(64)
-      // unique: true
+      type: Sequelize.STRING(64),
+      unique: true
     }
   },
   {
