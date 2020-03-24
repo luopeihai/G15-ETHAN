@@ -10,6 +10,9 @@ const {
 const { HotBook } = require("@models/hot-book");
 const { Book } = require("@models/book");
 
+const { Auth } = require("@middlewares/auth");
+const { Favor } = require("@models/favor");
+
 //获取参数
 // router.get("/v1/:id/book", async (ctx, next) => {
 //   const error = new HttpException("跪求报错", 10001, 400);
@@ -71,6 +74,14 @@ router.get("/search", async (ctx, next) => {
   );
   ctx.body = {
     result
+  };
+});
+
+//获取我点赞的数量
+router.get("/favor/count", new Auth().m, async (ctx, next) => {
+  const count = await Book.getMyFavorBookCount(ctx.auth.uid);
+  ctx.body = {
+    count
   };
 });
 

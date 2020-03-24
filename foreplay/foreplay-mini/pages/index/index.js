@@ -162,6 +162,19 @@ Page({
       }
     })
   },
+  onGetMyFavorsBookCount() { //获取我点赞的数量
+    wx.request({
+      url: 'http://localhost:3000/v1/book/favor/count',
+      method: 'GET',
+      // like key%
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password

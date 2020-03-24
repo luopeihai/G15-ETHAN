@@ -2,6 +2,7 @@ const { sequelize } = require("../../core/db");
 const { Sequelize, Model } = require("sequelize");
 const util = require("util");
 const axios = require("axios");
+const { Favor } = require("./favor");
 
 //书籍
 class Book extends Model {
@@ -14,6 +15,18 @@ class Book extends Model {
     const url = util.format(global.config.yushu.detailUrl, this.id);
     const detail = await axios.get(url);
     return detail.data;
+  }
+
+  //获取我点赞的数量
+  static async getMyFavorBookCount(uid) {
+    //count 只求数量
+    const count = await Favor.count({
+      where: {
+        type: 400,
+        uid
+      }
+    });
+    return count;
   }
 
   //搜查
