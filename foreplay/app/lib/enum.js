@@ -17,11 +17,12 @@ const LoginType = {
   isThisType
 };
 
+//报刊类型
 const ArtType = {
-  MOVIE: 100,
-  MUSIC: 200,
+  MOVIE: 100, //电影
+  MUSIC: 200, //音乐
   SENTENCE: 300,
-  BOOK: 400,
+  BOOK: 400, //书籍
   isThisType
 };
 

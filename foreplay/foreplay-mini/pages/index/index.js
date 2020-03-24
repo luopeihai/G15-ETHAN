@@ -97,6 +97,18 @@ Page({
       }
     })
   },
+  onGetMyFavorList() { //获取我点赞的期刊列表
+    wx.request({
+      url: 'http://localhost:3000/v1/classic/favor',
+      method: 'GET',
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password

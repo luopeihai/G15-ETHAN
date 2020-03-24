@@ -7,8 +7,8 @@ const { Auth } = require("../../../middlewares/auth");
 
 const { Flow } = require("../../models/flow");
 const { Movie, Music, Sentence } = require("../../models/flow");
-const { Art } = require("../../models/art");
-const { Favor } = require("../../models/favor");
+const { Art } = require("@models/art");
+const { Favor } = require("@models/favor");
 
 const {
   PositiveIntegerValidator,
@@ -119,6 +119,10 @@ router.get("/:type/:id/favor", new Auth().m, async ctx => {
   };
 });
 
-// router.get("/favor", new Auth().m, async ctx => {});
+//获取点赞集合
+router.get("/favor", new Auth().m, async ctx => {
+  const uid = ctx.auth.uid;
+  ctx.body = await Favor.getMyClassicFavors(uid);
+});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { sequelize } = require("../../core/db");
-const { Sequelize, Model } = require("sequelize");
+const { Sequelize, Model, Op } = require("sequelize");
 
 const { Art } = require("./art");
 
@@ -71,6 +71,27 @@ class Favor extends Model {
       }
     });
     return !!favor;
+  }
+
+  //查询点赞过的 报刊
+  static async getMyClassicFavors(uid) {
+    //排除 书籍点赞
+    const arts = await Favor.findAll({
+      where: {
+        uid,
+        type: {
+          // type 不等于 400
+          [Op.not]: 400
+        }
+      }
+    });
+
+    //没有电子的报刊
+    if (!arts) {
+      throw new global.errs.NotFound();
+    }
+
+    return await Art.getList(arts);
   }
 }
 

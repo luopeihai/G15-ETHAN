@@ -1,6 +1,6 @@
 const { Rule, LinValidator } = require("../../core/lin-validator-v2");
 
-const { LoginType } = require("../lib/enum");
+const { LoginType, ArtType } = require("../lib/enum");
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -20,6 +20,34 @@ function checkType(vals) {
   }
 }
 
+class Checker {
+  constructor(type) {
+    this.enumType = type;
+  }
+
+  check(vals) {
+    let type = vals.path.type || vals.body.type;
+
+    if (!type) {
+      throw new Error("type是必填参数");
+    }
+    type = parseInt(type);
+
+    if (!this.enumType.isThisType(type)) {
+      throw new Error("type参数不合法1");
+    }
+  }
+}
+
+//验证type 类型
+class ClassicValidator extends PositiveIntegerValidator {
+  constructor() {
+    super();
+    const checker = new Checker(ArtType);
+    this.validateType = checker.check.bind(checker);
+  }
+}
+
 class LikeValidator extends PositiveIntegerValidator {
   constructor() {
     super();
@@ -29,5 +57,6 @@ class LikeValidator extends PositiveIntegerValidator {
 
 module.exports = {
   PositiveIntegerValidator,
-  LikeValidator
+  LikeValidator,
+  ClassicValidator
 };
