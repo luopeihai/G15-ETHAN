@@ -6,7 +6,7 @@ const router = new Router({
 const { LikeValidator } = require("../../validators/validator");
 
 const { Auth } = require("../../../middlewares/auth");
-const { Favor } = require("../../models/favor");
+const { Favor } = require("@models/favor");
 
 const { handleResult } = require("../../lib/helper");
 

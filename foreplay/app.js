@@ -1,3 +1,6 @@
+//别名注册
+require("module-alias/register");
+
 const Koa = require("koa");
 //实例 Koa
 const app = new Koa();

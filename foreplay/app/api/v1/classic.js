@@ -98,23 +98,26 @@ router.get("/latest", new Auth().m, async (ctx, next) => {
 //   };
 // });
 
-// // 获取报刊点赞数量
-// router.get("/:type/:id/favor", new Auth().m, async ctx => {
-//   const v = await new ClassicValidator().validate(ctx);
-//   const id = v.get("path.id");
-//   const type = parseInt(v.get("path.type"));
+//  获取报刊点赞数量
+router.get("/:type/:id/favor", new Auth().m, async ctx => {
+  const v = await new ClassicValidator().validate(ctx);
+  const id = v.get("path.id");
+  const type = parseInt(v.get("path.type"));
 
-//   const art = await Art.getData(id, type);
-//   if (!art) {
-//     throw new global.errs.NotFound();
-//   }
+  const art = await Art.getData(id, type);
 
-//   const like = await Favor.userLikeIt(id, type, ctx.auth.uid);
-//   ctx.body = {
-//     fav_nums: art.fav_nums,
-//     like_status: like
-//   };
-// });
+  if (!art) {
+    //报刊不存在
+    throw new global.errs.NotFound();
+  }
+  //时候点赞
+  const like = await Favor.userLikeIt(id, type, ctx.auth.uid);
+
+  ctx.body = {
+    fav_nums: art.fav_nums,
+    like_status: like
+  };
+});
 
 // router.get("/favor", new Auth().m, async ctx => {});
 

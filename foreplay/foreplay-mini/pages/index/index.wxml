@@ -4,3 +4,4 @@
 <l-button size="long" l-class="btn"  bind:lintap = "onGetLatest">获取最新期刊</l-button>
 <l-button size="long" l-class="btn"  bind:lintap = "onLike">点赞</l-button>
 <l-button size="long" l-class="btn"  bind:lintap = "onDisLike">取消点赞</l-button>
+<l-button size="long" l-class="btn"  bind:lintap = "onGetClassicFavor">获取期刊点赞</l-button>

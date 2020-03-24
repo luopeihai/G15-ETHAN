@@ -813,4 +813,26 @@ import {Base64 } from 'js-base64'
 
 ### 获取最新期刊点赞
 
-###
+### alias 别名注册
+
+> 很多时候引用对象 需要很多根路径,但可以通过 module-alias 库,通过别名形式引用 对象
+
+1. npm i module-alias --save
+2. package.json 下添加:
+   ```
+   "_moduleAliases": {
+      "@root": ".",
+      "@models": "app/models",
+      "@validators": "app/validators",
+      "@middlewares": "middlewares"
+   }
+   ```
+3. 注册 module-alias , 在 app.js 中引入 module-alias
+   ```
+      "_moduleAliases": {
+         "@root": ".",
+         "@models": "app/models",
+         "@validators": "app/validators",
+         "@middlewares": "middlewares"
+      }
+   ```

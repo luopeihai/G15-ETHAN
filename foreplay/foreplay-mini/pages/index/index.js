@@ -85,6 +85,18 @@ Page({
       }
     })
   },
+  onGetClassicFavor() {//获取期刊点赞
+    wx.request({
+      url: 'http://localhost:3000/v1/classic/100/1/favor',
+      method: 'GET',
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password
