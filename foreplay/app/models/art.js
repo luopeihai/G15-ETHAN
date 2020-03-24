@@ -3,6 +3,26 @@ const { flatten } = require("lodash");
 const { Op } = require("sequelize");
 
 class Art {
+  constructor(art_id, type) {
+    this.art_id = art_id;
+    this.type = type;
+  }
+
+  //获取报刊详情
+  async getDetail(uid) {
+    //避免循环导入
+    const { Favor } = require("./favor");
+    const art = await Art.getData(this.art_id, this.type);
+    if (!art) {
+      throw new global.errs.NotFound();
+    }
+    const like = await Favor.userLikeIt(this.art_id, this.type, uid);
+    return {
+      art,
+      like_status: like
+    };
+  }
+
   //查询报刊集合
   static async getList(artInfoList) {
     //
@@ -69,13 +89,13 @@ class Art {
     const scope = useScope ? "bh" : null;
     switch (type) {
       case 100:
-        art = await Movie.scope(scope).findOne(finder);
+        art = await Movie.findOne(finder);
         break;
       case 200:
-        art = await Music.scope(scope).findOne(finder);
+        art = await Music.findOne(finder);
         break;
       case 300:
-        art = await Sentence.scope(scope).findOne(finder);
+        art = await Sentence.findOne(finder);
         break;
       case 400:
         break;
