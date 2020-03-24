@@ -39,6 +39,7 @@ class HotBook extends Model {
     // return books;
   }
 
+  //获取每本书的点赞总数
   static _getEachBookStatus(book, favors) {
     let count = 0;
     favors.forEach(favor => {

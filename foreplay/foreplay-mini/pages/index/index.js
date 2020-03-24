@@ -133,6 +133,18 @@ Page({
       }
     })
   },
+  onGetBookDetail() { //获取book详情
+    wx.request({
+      url: 'http://localhost:3000/v1/book/1120/detail',
+      method: 'GET',
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password

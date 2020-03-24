@@ -3,8 +3,9 @@ const router = new Router({
   prefix: "/v1/book"
 });
 
-const { PositiveIntegerValidator } = require("../../validators/validator");
+const { PositiveIntegerValidator } = require("@validators/validator");
 const { HotBook } = require("@models/hot-book");
+const { Book } = require("@models/book");
 
 //获取参数
 // router.get("/v1/:id/book", async (ctx, next) => {
@@ -42,11 +43,19 @@ const { HotBook } = require("@models/hot-book");
 //   ctx.body = global.config.environment;
 // });
 
+//热门书籍
 router.get("/hot_list", async (ctx, next) => {
   const books = await HotBook.getAll();
   ctx.body = {
     books
   };
+});
+
+//获取book详情
+router.get("/:id/detail", async (ctx, next) => {
+  const v = await new PositiveIntegerValidator().validate(ctx);
+  const book = await new Book(v.get("path.id"));
+  ctx.body = await book.getDetail();
 });
 
 module.exports = router;
