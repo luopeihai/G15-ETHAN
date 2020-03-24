@@ -3,7 +3,10 @@ const router = new Router({
   prefix: "/v1/book"
 });
 
-const { PositiveIntegerValidator } = require("@validators/validator");
+const {
+  PositiveIntegerValidator,
+  SearchValidator
+} = require("@validators/validator");
 const { HotBook } = require("@models/hot-book");
 const { Book } = require("@models/book");
 
@@ -56,6 +59,19 @@ router.get("/:id/detail", async (ctx, next) => {
   const v = await new PositiveIntegerValidator().validate(ctx);
   const book = await new Book(v.get("path.id"));
   ctx.body = await book.getDetail();
+});
+
+//搜查
+router.get("/search", async (ctx, next) => {
+  const v = await new SearchValidator().validate(ctx);
+  const result = await Book.searchFromYuShu(
+    v.get("query.q"),
+    v.get("query.start"),
+    v.get("query.count")
+  );
+  ctx.body = {
+    result
+  };
 });
 
 module.exports = router;

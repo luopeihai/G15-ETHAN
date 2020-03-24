@@ -12,4 +12,6 @@
 <l-button size="long" l-class="btn"  bind:lintap = "onGetHotBookList">获取热门书籍</l-button>
 
 <l-button size="long" l-class="btn"  bind:lintap = "onGetBookDetail">获取book详情</l-button>
+<l-button size="long" l-class="btn"  bind:lintap = "onBookSearch">查询书籍</l-button>
+
 

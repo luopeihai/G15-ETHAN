@@ -55,8 +55,27 @@ class LikeValidator extends PositiveIntegerValidator {
   }
 }
 
+//搜索校验
+class SearchValidator extends LinValidator {
+  constructor() {
+    super();
+    this.q = [new Rule("isLength", "搜索关键词不能为空", { min: 1, max: 16 })];
+    this.start = [
+      //页码
+      new Rule("isInt", "start不符合规范", { min: 1, max: 60000 }),
+      new Rule("isOptional", "", 0) //默认值为0
+    ];
+    this.count = [
+      //页数
+      new Rule("isInt", "count不符合规范", { min: 1, max: 60000 }),
+      new Rule("isOptional", "", 20) //默认值一页 20条
+    ];
+  }
+}
+
 module.exports = {
   PositiveIntegerValidator,
   LikeValidator,
-  ClassicValidator
+  ClassicValidator,
+  SearchValidator
 };

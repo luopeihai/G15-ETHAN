@@ -145,6 +145,23 @@ Page({
       }
     })
   },
+  onBookSearch() { //鱼书 查询书籍
+    wx.request({
+      url: 'http://localhost:3000/v1/book/search',
+      method: 'GET',
+      data: {
+        q: '东野',
+        count: 5
+      },
+      // like key%
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password
