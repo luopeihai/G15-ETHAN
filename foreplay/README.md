@@ -846,3 +846,7 @@ import {Base64 } from 'js-base64'
 ### 获取 book 详情
 
 ### book 搜索书籍
+
+### 获取我点赞的数量
+
+### book 点赞数

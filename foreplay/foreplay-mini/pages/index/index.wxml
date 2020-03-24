@@ -16,5 +16,7 @@
 
 <l-button size="long" l-class="btn"  bind:lintap = "onGetMyFavorsBookCount">获取我点赞的数量</l-button>
 
+<l-button size="long" l-class="btn"  bind:lintap = "onGetBookFavor">book 点赞数</l-button>
+
 
 

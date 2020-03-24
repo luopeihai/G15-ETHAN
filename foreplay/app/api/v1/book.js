@@ -85,4 +85,14 @@ router.get("/favor/count", new Auth().m, async (ctx, next) => {
   };
 });
 
+//获取book 的点赞数
+router.get("/:book_id/favor", new Auth().m, async (ctx, next) => {
+  const v = await new PositiveIntegerValidator().validate(ctx, {
+    id: "book_id"
+  });
+  const favor = await Favor.getBookFavor(ctx.auth.uid, v.get("path.book_id"));
+
+  ctx.body = favor;
+});
+
 module.exports = router;
