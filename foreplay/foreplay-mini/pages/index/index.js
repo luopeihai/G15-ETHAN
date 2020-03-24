@@ -121,6 +121,18 @@ Page({
       }
     })
   },
+  onGetHotBookList() {
+    wx.request({
+      url: 'http://localhost:3000/v1/book/hot_list',
+      method: 'GET',
+      success: res => {
+        console.log(res.data)
+      },
+      header: {
+        Authorization: this._encode()
+      }
+    })
+  },
 
   _encode() { //Authorization 加密
     // account:password

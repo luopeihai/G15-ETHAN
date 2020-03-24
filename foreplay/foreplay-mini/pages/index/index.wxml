@@ -8,3 +8,7 @@
 <l-button size="long" l-class="btn"  bind:lintap = "onGetMyFavorList">获取我点赞的期刊列表</l-button>
 
 <l-button size="long" l-class="btn"  bind:lintap = "onGetClassicDetail">获取期刊详情</l-button>
+
+<l-button size="long" l-class="btn"  bind:lintap = "onGetHotBookList">获取热门书籍</l-button>
+
+
