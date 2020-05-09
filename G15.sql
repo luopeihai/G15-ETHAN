@@ -1,0 +1,108 @@
+DROP TABLE IF EXISTS `G15_user`; #用户表
+CREATE TABLE IF NOT EXISTS `G15_user`(
+   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+   `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid',
+   `username` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '用户名',
+   `status` INT  NOT NULL DEFAULT '1' COMMENT '用户状态', #0-禁用 #1-启用
+   `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+   `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+   `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `G15_user_profile`; #用户详情表
+CREATE TABLE IF NOT EXISTS `G15_user_profile`(
+   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+   `email` VARCHAR(50) DEFAULT NULL COMMENT '邮箱',
+   `nickname` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '昵称',
+   `avatar` CHAR(255) NOT NULL DEFAULT '' COMMENT '用户头像',
+   `sign` VARCHAR(1000)  COMMENT '个性签名',
+   `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '姓名',
+   `sex` ENUM('0','1','2') NOT NULL DEFAULT '0' COMMENT '性别0-男 1-女 2-未知',
+   `tel` CHAR(255) NOT NULL DEFAULT '' COMMENT '电话',
+   `city` CHAR(255) NOT NULL DEFAULT '' COMMENT '城市',
+   `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+   `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+   `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `G15_user_collect`; #收藏
+CREATE TABLE IF NOT EXISTS `G15_user_collect` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '订单详情id',
+    `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid', #唯一识别码
+    `post_uid` CHAR(255) NOT NULL DEFAULT '' COMMENT '文章唯一识别码uid',
+    `user_uid` CHAR(255) NOT NULL DEFAULT '' COMMENT '用户唯一识别码uid',
+    `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+    `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `G15_admin`; #管理员表
+CREATE TABLE IF NOT EXISTS `G15_admin`(
+   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+   `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid',
+   `administrators` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '管理员账号', #管理员账号
+   `adminpass` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '管理员密码',
+   `logintime` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '登录时间',
+   `status` INT  NOT NULL DEFAULT '1' COMMENT '管理员状态', #0-禁用 #1-启用
+   `user_uid`  CHAR(255) NOT NULL DEFAULT '' COMMENT '用户uid',
+   `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+   `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+   `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `G15_post_category`; #文章分类
+CREATE TABLE IF NOT EXISTS `G15_post_category`(
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+  `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid',
+  `title` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '标题',
+  `parent_uid` BIGINT NOT NULL DEFAULT '0' COMMENT '父类uid',
+  `sort` INT NOT NULL DEFAULT '0' COMMENT '排序',
+  `level` INT NOT NULL DEFAULT '1' COMMENT '层级',
+  `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `G15_post`; #文章表
+CREATE TABLE IF NOT EXISTS `G15_post`(
+   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+   `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid',
+   `title` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '标题',
+   `view` double DEFAULT 0 COMMENT '查看数',
+   `html` TEXT COMMENT '内容',
+   `comment_count` INT NOT NULL DEFAULT '0' COMMENT '评论数',
+   `category_uid`  CHAR(255) NOT NULL DEFAULT '' COMMENT '类别uid',
+   `user_uid`  CHAR(255) NOT NULL DEFAULT '' COMMENT '用户uid',
+   `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+   `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+   `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+
+DROP TABLE IF EXISTS `G15_post_comment`; #评论
+CREATE TABLE IF NOT EXISTS `G15_post_comment`(
+   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+   `uid` CHAR(255) NOT NULL DEFAULT '' COMMENT 'uid',
+   `comment` TEXT COMMENT '评论内容',
+   `like_count` double DEFAULT 0 COMMENT '赞数',
+   `comment_count` INT NOT NULL DEFAULT '0' COMMENT '评论数',
+   `user_uid`  CHAR(255) NOT NULL DEFAULT '' COMMENT '用户uid',
+   `target_user_uid`  CHAR(255) NOT NULL DEFAULT '' COMMENT '被评论用户uid',
+   `parent_uid` BIGINT NOT NULL DEFAULT '0' COMMENT '父类uid',
+   `post_uid` BIGINT NOT NULL DEFAULT '0' COMMENT '评论文章uid',
+   `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+   `updated_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+   `deleted_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间'
+)ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+
+
+
+
